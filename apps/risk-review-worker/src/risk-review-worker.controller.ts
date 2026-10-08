@@ -3,7 +3,9 @@ import { RiskReviewWorkerService } from './risk-review-worker.service';
 
 @Controller()
 export class RiskReviewWorkerController {
-  constructor(private readonly riskReviewWorkerService: RiskReviewWorkerService) {}
+  constructor(
+    private readonly riskReviewWorkerService: RiskReviewWorkerService,
+  ) {}
 
   @Get()
   getHello(): string {

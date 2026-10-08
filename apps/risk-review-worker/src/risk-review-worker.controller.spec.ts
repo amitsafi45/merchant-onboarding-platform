@@ -11,7 +11,9 @@ describe('RiskReviewWorkerController', () => {
       providers: [RiskReviewWorkerService],
     }).compile();
 
-    riskReviewWorkerController = app.get<RiskReviewWorkerController>(RiskReviewWorkerController);
+    riskReviewWorkerController = app.get<RiskReviewWorkerController>(
+      RiskReviewWorkerController,
+    );
   });
 
   describe('root', () => {
