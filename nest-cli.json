@@ -1,8 +1,32 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/merchant-onboarding-platform/src",
   "compilerOptions": {
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/merchant-onboarding-platform/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/merchant-onboarding-platform",
+  "projects": {
+    "merchant-onboarding-platform": {
+      "type": "application",
+      "root": "apps/merchant-onboarding-platform",
+      "entryFile": "main",
+      "sourceRoot": "apps/merchant-onboarding-platform/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/merchant-onboarding-platform/tsconfig.app.json"
+      }
+    },
+    "risk-review-worker": {
+      "type": "application",
+      "root": "apps/risk-review-worker",
+      "entryFile": "main",
+      "sourceRoot": "apps/risk-review-worker/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/risk-review-worker/tsconfig.app.json"
+      }
+    }
   }
 }
