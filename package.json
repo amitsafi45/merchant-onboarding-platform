@@ -27,18 +27,24 @@
     "test:e2e": "jest --config ./apps/merchant-onboarding-platform/test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/bullmq": "^10.2.3",
     "@nestjs/common": "^10.0.0",
-    "@nestjs/config": "^12.0.1",
+    "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/platform-socket.io": "10.4.22",
-    "@nestjs/swagger": "^12.0.2",
+    "@nestjs/swagger": "^7.4.2",
+    "@nestjs/typeorm": "^10.0.2",
     "@nestjs/websockets": "^10.4.22",
+    "bullmq": "^6.3.12",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
+    "ioredis": "^5.11.1",
+    "pg": "^8.23.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "socket.io": "^4.8.4"
+    "socket.io": "^4.8.4",
+    "typeorm": "^0.3.31"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -47,6 +53,7 @@
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",
+    "@types/pg": "^8.23.1",
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
@@ -84,7 +91,9 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1"
+      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1",
+      "^@app/typeorm-source(|/.*)$": "<rootDir>/libs/typeorm-source/src/$1",
+      "^@app/queue-contracts(|/.*)$": "<rootDir>/libs/queue-contracts/src/$1"
     }
   }
 }
