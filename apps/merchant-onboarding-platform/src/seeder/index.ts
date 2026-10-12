@@ -1,4 +1,4 @@
-import { AppDataSource } from '@app/typeorm-source';
+import { AppDataSource } from '../../../../libs/typeorm-source/src/configs/db.config';
 import { seedAdmins } from './admin.seeder';
 import { seedSeller } from './seller.seeder';
 
