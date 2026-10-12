@@ -67,9 +67,7 @@ ADMIN_JWT_EXPIRES_IN=1h
 
 **Important:** The values in `.env.example` are placeholders for demonstration purposes. Replace the secrets and credentials as appropriate for your environment. Do not commit your `.env` file or real credentials to version control.
 
-<p style="color: red;">
-When running through Docker Compose, the database and Redis hostnames are configured as <code>db</code> and <code>redis</code> respectively. The Compose configuration overrides these host values for the application containers.
-</p>
+> **⚠️ Warning:** When running through Docker Compose, the database and Redis hostnames are configured as `db` and `redis` respectively. The Compose configuration overrides these host values for the application containers.
 
 ### 3. Start the Application
 
@@ -712,3 +710,7 @@ Allows reviewers to submit risk decisions for applications assigned to them. Sys
 - `404 Not Found` — No matching risk review exists, or the application is not assigned to the requesting reviewer.
 
 **Important:** When `REQUEST_INFORMATION` is selected, the risk review is marked as `FAIL` and `COMPLETED`, while the merchant application moves to `REQUEST_INFORMATION`. The seller can then provide the requested information and resubmit the application.
+
+<img width="1920" height="911" alt="Screenshot 2026-10-13 at 05 06 20" src="https://github.com/user-attachments/assets/f89f695a-d736-4155-b2d0-29c40ae34329" />
+
+
