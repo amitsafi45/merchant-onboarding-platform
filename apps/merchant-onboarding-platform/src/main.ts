@@ -1,8 +1,10 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Environment, GlobalErrorHandlingFilter } from '@app/common';
+import { errorMessageExtract } from '@app/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
@@ -14,10 +16,23 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       transform: true,
+      forbidNonWhitelisted: true,
+      stopAtFirstError: true,
+      exceptionFactory: errorMessageExtract,
     }),
   );
+  const httpAdapter = app.get(HttpAdapterHost);
+  app.enableCors({
+    // Allow all origins during development; use configured origins otherwise.
+    origin:
+      configService.getOrThrow<string>('NODE_ENV') === Environment.Development
+        ? '*'
+        : JSON.parse(configService.getOrThrow<string>('CORS_ORIGINS')),
+  });
+  app.useGlobalFilters(new GlobalErrorHandlingFilter(httpAdapter));
   // Swagger
   const swaggerConfig = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Merchant Onboarding Platform API')
     .setDescription('The Merchant Onboarding Platform API description')
     .setVersion('1.0')
