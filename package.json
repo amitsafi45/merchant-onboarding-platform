@@ -10,7 +10,6 @@
     "build:api": "nest build merchant-onboarding-platform",
     "build:worker": "nest build risk-review-worker",
     "build:all": "pnpm build:api && pnpm build:worker",
-    "build:ch": "pnpm exec nest build common && pnpm exec nest build typeorm-source && pnpm build:api && pnpm build:worker",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "seed": "tsx apps/merchant-onboarding-platform/src/seeder/index.ts",
     "migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:generate -d libs/typeorm-source/src/configs/db.config.ts",
