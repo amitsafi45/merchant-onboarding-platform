@@ -29,7 +29,6 @@ export class GlobalErrorHandlingFilter implements ExceptionFilter {
       success: false,
       message,
     };
-    console.log(exception, 'lop');
     httpAdapter.reply(response, responseBody, httpStatus);
   }
 }
