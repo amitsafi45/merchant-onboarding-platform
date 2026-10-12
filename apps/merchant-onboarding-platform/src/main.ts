@@ -18,6 +18,9 @@ async function bootstrap() {
       transform: true,
       forbidNonWhitelisted: true,
       stopAtFirstError: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
       exceptionFactory: errorMessageExtract,
     }),
   );

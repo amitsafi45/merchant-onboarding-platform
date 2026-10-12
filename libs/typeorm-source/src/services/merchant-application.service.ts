@@ -1,5 +1,5 @@
 import { MerchantApplication } from '@app/typeorm-source';
-import { ApplicationStatus } from '@app/common';
+import { ApplicationStatus, PaginatedResponse } from '@app/common';
 import {
   ForbiddenException,
   Injectable,
@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
+import { PaginationQueryDto } from '@app/common/pagination-query.dto';
 
 @Injectable()
 export class MerchantApplicationService {
@@ -59,15 +60,31 @@ export class MerchantApplicationService {
     return this.merchantApplicationRepository.save(application);
   }
 
-  async getOwnApplications(userId: string): Promise<MerchantApplication[]> {
-    return this.merchantApplicationRepository.find({
-      where: {
-        submittedBy: userId,
-      },
-      order: {
-        createdAt: 'DESC',
-      },
-    });
+  async getOwnApplications(
+    userId: string,
+    paginationQueryDto: PaginationQueryDto,
+  ): Promise<PaginatedResponse<MerchantApplication>> {
+    const { page, limit } = paginationQueryDto;
+
+    const [applications, total] =
+      await this.merchantApplicationRepository.findAndCount({
+        where: {
+          submittedBy: userId,
+        },
+        skip: (page - 1) * limit,
+        take: limit,
+        order: {
+          createdAt: 'DESC',
+        },
+      });
+
+    return {
+      data: applications,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async getApplicationsByAdmin() {

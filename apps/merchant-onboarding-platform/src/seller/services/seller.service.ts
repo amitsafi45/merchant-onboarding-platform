@@ -13,6 +13,7 @@ import {
   UpdateMerchantApplicationDto,
 } from '../dto/seller.dto';
 import { MerchantApplicationService } from '@app/typeorm-source';
+import { PaginationQueryDto } from '@app/common/pagination-query.dto';
 
 @Injectable()
 export class SellerService {
@@ -114,8 +115,14 @@ export class SellerService {
    * @param userId - ID of the authenticated seller.
    * @returns The seller's merchant applications.
    */
-  async getOwnApplications(userId: string) {
-    return this.merchantApplicationService.getOwnApplications(userId);
+  async getOwnApplications(
+    userId: string,
+    paginationQueryDto: PaginationQueryDto,
+  ) {
+    return this.merchantApplicationService.getOwnApplications(
+      userId,
+      paginationQueryDto,
+    );
   }
 
   /**

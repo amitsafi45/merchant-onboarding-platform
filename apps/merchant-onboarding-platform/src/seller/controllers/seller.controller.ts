@@ -7,6 +7,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -22,6 +23,7 @@ import {
   UpdateMerchantApplicationDto,
 } from '../dto/seller.dto';
 import { SellerAuthentication, UserAuthPayload } from '@app/guards';
+import { PaginationQueryDto } from '@app/common/pagination-query.dto';
 
 @Controller()
 @ApiTags('Seller(normal user) api')
@@ -77,13 +79,20 @@ export class SellerController {
     status: 200,
     description: 'Seller applications retrieved successfully',
   })
-  async getOwnApplications(@Req() req: Request & { user: UserAuthPayload }) {
-    const data = await this.sellerService.getOwnApplications(req.user.sub);
+  async getOwnApplications(
+    @Req() req: Request & { user: UserAuthPayload },
+    @Query() paginationQueryDto: PaginationQueryDto,
+  ) {
+    const { data, ...metadata } = await this.sellerService.getOwnApplications(
+      req.user.sub,
+      paginationQueryDto,
+    );
     return {
       statusCode: HttpStatus.OK,
       success: true,
       message: 'Application fetch successfully.',
       data: data,
+      metadata: metadata,
     };
   }
 }
