@@ -7,6 +7,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { AssignReviewerDto } from '../dto/admin.dto';
 import { ApplicationStatus, RiskReviewStatus } from '@app/common';
 import { DataSource } from 'typeorm';
+import { PaginationQueryDto } from '@app/common/pagination-query.dto';
 
 @Injectable()
 export class AdminService {
@@ -17,8 +18,10 @@ export class AdminService {
     private readonly dataSource: DataSource,
   ) {}
 
-  async getApplicationsByAdmin() {
-    return this.merchantApplicationService.getApplicationsByAdmin();
+  async getApplicationsByAdmin(paginationQueryDto: PaginationQueryDto) {
+    return this.merchantApplicationService.getApplicationsByAdmin(
+      paginationQueryDto,
+    );
   }
 
   /**

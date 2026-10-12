@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   Patch,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -20,6 +21,7 @@ import {
 import { AdminRole } from '@app/common';
 import { AdminService } from '../services/admin.service';
 import { AssignReviewerDto } from '../dto/admin.dto';
+import { PaginationQueryDto } from '@app/common/pagination-query.dto';
 
 @ApiTags('Admin API')
 @ApiBearerAuth()
@@ -43,13 +45,17 @@ export class AdminController {
     status: 403,
     description: 'Forbidden',
   })
-  async getApplicationsByAdmin() {
-    const data = await this.adminService.getApplicationsByAdmin();
+  async getApplicationsByAdmin(
+    @Query() paginationQueryDto: PaginationQueryDto,
+  ) {
+    const { data, ...metadata } =
+      await this.adminService.getApplicationsByAdmin(paginationQueryDto);
     return {
       statusCode: HttpStatus.OK,
       success: true,
       message: 'Merchant applications retrieved successfully.',
       data: data,
+      metadata: metadata,
     };
   }
   @Get('/reviewers')

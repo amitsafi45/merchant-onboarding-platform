@@ -117,12 +117,26 @@ export class MerchantApplicationService {
     };
   }
 
-  async getApplicationsByAdmin() {
-    return this.merchantApplicationRepository.find({
-      order: {
-        createdAt: 'DESC',
-      },
-    });
+  async getApplicationsByAdmin(
+    paginationQueryDto: PaginationQueryDto,
+  ): Promise<PaginatedResponse<MerchantApplication>> {
+    const { page, limit } = paginationQueryDto;
+
+    const [applications, total] =
+      await this.merchantApplicationRepository.findAndCount({
+        skip: (page - 1) * limit,
+        take: limit,
+        order: {
+          createdAt: 'DESC',
+        },
+      });
+    return {
+      data: applications,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async getOwnApplicationById(data: { applicationId: string; userId: string }) {
