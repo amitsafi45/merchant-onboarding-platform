@@ -37,6 +37,9 @@ export class RiskReview {
   @Column({ type: 'text', nullable: true })
   reason: string | null;
 
+  @Column({ type: 'text', nullable: true, name: 'admin_reason' })
+  adminReason: string | null;
+
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 

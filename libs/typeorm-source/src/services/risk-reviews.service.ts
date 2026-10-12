@@ -84,6 +84,7 @@ export class RiskReviewsService {
         status: true,
         score: true,
         reason: true,
+        adminReason: true,
         providerReference: true,
         isAutoAnalysisCompleted: true,
         createdAt: true,
@@ -93,5 +94,27 @@ export class RiskReviewsService {
         createdAt: 'DESC',
       },
     });
+  }
+
+  async findOneRiskReview(
+    data: AssignReviewerDto,
+    manager?: EntityManager,
+  ): Promise<RiskReview | null> {
+    const repository = manager
+      ? manager.getRepository(RiskReview)
+      : this.riskReviewRepository;
+
+    return repository.findOneBy({
+      applicationId: data.applicationId,
+      reviewerId: data.reviewerId,
+    });
+  }
+
+  async updateRiskReview(
+    applicationId: string,
+    payload: Partial<RiskReview>,
+    manager: EntityManager,
+  ): Promise<void> {
+    await manager.getRepository(RiskReview).update({ applicationId }, payload);
   }
 }

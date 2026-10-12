@@ -1,4 +1,12 @@
-import { Controller, Get, HttpStatus, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Patch,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiOperation,
@@ -13,6 +21,7 @@ import {
   AdminAuthPayload,
 } from '@app/guards';
 import { ReviewerService } from '../services/reviewer.service';
+import { RiskDecisionDto } from '../dto/reviewer.dto';
 
 @ApiTags('Reviewer API')
 @ApiBearerAuth()
@@ -50,6 +59,39 @@ export class ReviewerController {
       success: true,
       message: 'Reviewer applications retrieved successfully.',
       data: data,
+    };
+  }
+
+  @Patch('/reviewer/applications/risk-decision')
+  @AdminRoles(AdminRole.REVIEWER)
+  @UseGuards(AdminAuthentication, AdminAuthorization)
+  @ApiOperation({
+    summary: 'Perform a risk decision on an application',
+    description:
+      'Reviewers can perform risk decisions only on applications assigned to them. System admins can perform risk decisions on any application.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Risk decision submitted successfully',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized',
+  })
+  @ApiResponse({
+    status: 403,
+    description: 'Forbidden',
+  })
+  async performRiskDecision(
+    @Req() req: Request & { admin: AdminAuthPayload },
+    @Body() body: RiskDecisionDto,
+  ) {
+    await this.reviewerService.performRiskDecision(req.admin, body);
+
+    return {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'Risk decision performed successfully.',
     };
   }
 }
