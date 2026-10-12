@@ -79,6 +79,7 @@ export class RiskReviewsService {
           taxIdentificationNumber: true,
           submittedBy: true,
           createdAt: true,
+          updatedAt: true,
         },
         status: true,
         score: true,
