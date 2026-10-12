@@ -23,7 +23,12 @@ export class ReviewerController {
   @Get('/reviewer/applications')
   @AdminRoles(AdminRole.REVIEWER)
   @UseGuards(AdminAuthentication, AdminAuthorization)
-  @ApiOperation({ summary: 'Get applications assigned to the reviewer' })
+  @ApiOperation({
+    summary:
+      'Get risk reviews assigned to the reviewer or all risk reviews for admin',
+    description:
+      'Reviewers can view only risk reviews assigned to them. Admins can view all risk reviews.',
+  })
   @ApiResponse({
     status: 200,
     description: 'Reviewer applications retrieved successfully',
