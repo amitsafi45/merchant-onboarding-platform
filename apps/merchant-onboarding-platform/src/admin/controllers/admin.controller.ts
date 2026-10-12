@@ -74,14 +74,16 @@ export class AdminController {
     status: 403,
     description: 'Forbidden',
   })
-  async getReviewersByAdmin() {
-    const data = await this.adminService.getReviewersByAdmin();
+  async getReviewersByAdmin(@Query() paginationQueryDto: PaginationQueryDto) {
+    const { data, ...metadata } =
+      await this.adminService.getReviewersByAdmin(paginationQueryDto);
 
     return {
       statusCode: HttpStatus.OK,
       success: true,
       message: 'Reviewers retrieved successfully.',
-      data,
+      data: data,
+      metadata: metadata,
     };
   }
 

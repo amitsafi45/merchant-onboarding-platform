@@ -124,6 +124,36 @@ export class MerchantApplicationService {
 
     const [applications, total] =
       await this.merchantApplicationRepository.findAndCount({
+        relations: {
+          riskReview: true,
+        },
+        select: {
+          id: true,
+          businessName: true,
+          legalBusinessName: true,
+          businessType: true,
+          ownerName: true,
+          ownerEmail: true,
+          ownerPhone: true,
+          requestedProcessingVolume: true,
+          status: true,
+          requestedTransactionType: true,
+          businessRegistrationNumber: true,
+          businessWebsite: true,
+          businessAddress: true,
+          taxIdentificationNumber: true,
+          submittedBy: true,
+          createdAt: true,
+          updatedAt: true,
+          riskReview: {
+            id: true,
+            status: true,
+            score: true,
+            reason: true,
+            adminReason: true,
+            providerReference: true,
+          },
+        },
         skip: (page - 1) * limit,
         take: limit,
         order: {

@@ -1,4 +1,5 @@
-import { AdminRole } from '@app/common';
+import { AdminRole, PaginatedResponse } from '@app/common';
+import { PaginationQueryDto } from '@app/common/pagination-query.dto';
 import { Admin } from '@app/typeorm-source';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -23,8 +24,23 @@ export class AdminService {
       },
     });
   }
-  async getReviewersByAdmin() {
-    return this.adminRepository.find({ where: { role: AdminRole.REVIEWER } });
+  async getReviewersByAdmin(
+    paginationQueryDto: PaginationQueryDto,
+  ): Promise<PaginatedResponse<Admin>> {
+    const { page, limit } = paginationQueryDto;
+
+    const [admin, total] = await this.adminRepository.findAndCount({
+      where: { role: AdminRole.REVIEWER },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    return {
+      data: admin,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async getReviewerById(

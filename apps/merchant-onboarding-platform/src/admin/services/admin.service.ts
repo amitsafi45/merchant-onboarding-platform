@@ -24,15 +24,15 @@ export class AdminService {
     );
   }
 
+  async getReviewersByAdmin(paginationQueryDto: PaginationQueryDto) {
+    return this.adminService.getReviewersByAdmin(paginationQueryDto);
+  }
+
   /**
    * Assigns a reviewer and updates application statuses transactionally.
    * Risk review: PENDING → PROCESSING
    * Application: SUBMITTED → UNDER_REVIEW
    */
-  async getReviewersByAdmin() {
-    return this.adminService.getReviewersByAdmin();
-  }
-
   async assignReviewer(data: AssignReviewerDto): Promise<void> {
     await this.dataSource.transaction(async (manager) => {
       const riskReview =
