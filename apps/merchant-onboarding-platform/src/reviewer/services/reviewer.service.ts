@@ -19,6 +19,7 @@ import {
 } from '@nestjs/common';
 import { RiskDecisionDto } from '../dto/reviewer.dto';
 import { DataSource, EntityManager } from 'typeorm';
+import { PaginationQueryDto } from '@app/common/pagination-query.dto';
 
 @Injectable()
 export class ReviewerService {
@@ -28,11 +29,17 @@ export class ReviewerService {
     private readonly dataSource: DataSource,
   ) {}
 
-  async getApplicationsForReview(admin: AdminAuthPayload) {
+  async getApplicationsForReview(
+    admin: AdminAuthPayload,
+    paginationQueryDto: PaginationQueryDto,
+  ) {
     const where =
       admin.role === AdminRole.ADMIN ? {} : { reviewerId: admin.sub };
 
-    return this.riskReviewsService.getRiskReviewsApplication(where);
+    return this.riskReviewsService.getRiskReviewsApplication(
+      where,
+      paginationQueryDto,
+    );
   }
 
   async performRiskDecision(

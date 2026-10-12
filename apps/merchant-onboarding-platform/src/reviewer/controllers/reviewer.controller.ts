@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   Patch,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -22,6 +23,7 @@ import {
 } from '@app/guards';
 import { ReviewerService } from '../services/reviewer.service';
 import { RiskDecisionDto } from '../dto/reviewer.dto';
+import { PaginationQueryDto } from '@app/common/pagination-query.dto';
 
 @ApiTags('Reviewer API')
 @ApiBearerAuth()
@@ -52,13 +54,19 @@ export class ReviewerController {
   })
   async getApplicationsByReviewer(
     @Req() req: Request & { admin: AdminAuthPayload },
+    @Query() paginationQueryDto: PaginationQueryDto,
   ) {
-    const data = await this.reviewerService.getApplicationsForReview(req.admin);
+    const { data, ...metadata } =
+      await this.reviewerService.getApplicationsForReview(
+        req.admin,
+        paginationQueryDto,
+      );
     return {
       statusCode: HttpStatus.OK,
       success: true,
       message: 'Reviewer applications retrieved successfully.',
       data: data,
+      metadata: metadata,
     };
   }
 

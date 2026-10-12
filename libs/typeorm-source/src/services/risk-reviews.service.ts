@@ -2,9 +2,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { RiskReviewStatus } from '@app/common';
 import { RiskReview } from '@app/typeorm-source';
 import { EntityManager, FindOptionsWhere, Repository } from 'typeorm';
-import { CreateRiskReviewInput } from '@app/common/interface';
+import {
+  CreateRiskReviewInput,
+  PaginatedResponse,
+} from '@app/common/interface';
 import { Injectable } from '@nestjs/common';
 import { AssignReviewerDto } from 'apps/merchant-onboarding-platform/src/admin/dto/admin.dto';
+import { PaginationQueryDto } from '@app/common/pagination-query.dto';
 
 @Injectable()
 export class RiskReviewsService {
@@ -54,9 +58,14 @@ export class RiskReviewsService {
 
   async getRiskReviewsApplication(
     where: FindOptionsWhere<RiskReview>,
-  ): Promise<RiskReview[]> {
-    return this.riskReviewRepository.find({
+    paginationQueryDto: PaginationQueryDto,
+  ): Promise<PaginatedResponse<RiskReview>> {
+    const { page, limit } = paginationQueryDto;
+
+    const [riskReviews, total] = await this.riskReviewRepository.findAndCount({
       where,
+      skip: (page - 1) * limit,
+      take: limit,
       relations: {
         application: true,
       },
@@ -94,6 +103,13 @@ export class RiskReviewsService {
         createdAt: 'DESC',
       },
     });
+    return {
+      data: riskReviews,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async findOneRiskReview(
