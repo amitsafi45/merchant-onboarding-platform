@@ -36,6 +36,33 @@
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
+    },
+    "typeorm-source": {
+      "type": "library",
+      "root": "libs/typeorm-source",
+      "entryFile": "index",
+      "sourceRoot": "libs/typeorm-source/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/typeorm-source/tsconfig.lib.json"
+      }
+    },
+    "queue-contracts": {
+      "type": "library",
+      "root": "libs/queue-contracts",
+      "entryFile": "index",
+      "sourceRoot": "libs/queue-contracts/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/queue-contracts/tsconfig.lib.json"
+      }
+    },
+    "guards": {
+      "type": "library",
+      "root": "libs/guards",
+      "entryFile": "index",
+      "sourceRoot": "libs/guards/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/guards/tsconfig.lib.json"
+      }
     }
   }
 }
